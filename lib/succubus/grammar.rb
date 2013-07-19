@@ -24,7 +24,8 @@ module Succubus
     def initialize(&block)
       @rules = {}      
       @errors = []
-      define_singleton_method(:create, block)
+      singleton = class << self; self end
+      singleton.send :define_method, :create, block
       create
       class << self ; undef_method :create ; end
 

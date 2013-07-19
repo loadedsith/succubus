@@ -54,6 +54,7 @@ module Succubus
     # @return [String] the string produced
     def invoke(rule)
       # Check the rule is defined; error if so
+
       unless @rules.include? rule
         @errors << "No such rule: #{rule}"
         return "!!#{rule}!!"
@@ -69,12 +70,14 @@ module Succubus
       # Scan it for all instances of (unescaped) <rules>
       # Each match will be an array containing the portion of string before
       # the <rule>; and the <rule> itself (which may be empty on the last match)
-      choice.scan(/(.*?(?<!\\)(?:\\\\)*)(<.*?>|$)/) do |match|
+
+      choice.match(/(.*?)(<.*?>|$)/) do |match|
         local_res << match[0]
         unless match[1].empty?
           local_res << invoke(match[1].match(/<(.*?)>/)[1].to_sym)
         end
       end
+        
 
       return local_res
     end
