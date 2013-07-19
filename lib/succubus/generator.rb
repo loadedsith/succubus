@@ -71,7 +71,7 @@ module Succubus
       # Each match will be an array containing the portion of string before
       # the <rule>; and the <rule> itself (which may be empty on the last match)
 
-      choice.match(/(.*?)(<.*?>|$)/) do |match|
+      choice.scan(/(.*?)(<.*?>|$)/) do |match|
         local_res << match[0]
         unless match[1].empty?
           local_res << invoke(match[1].match(/<(.*?)>/)[1].to_sym)
